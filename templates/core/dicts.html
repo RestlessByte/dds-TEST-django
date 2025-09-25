@@ -1,0 +1,122 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">Справочники</h1>
+
+<div class="row g-3">
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">Статусы</div>
+      <div class="card-body">
+        <form method="post" class="mb-2">{% csrf_token %}
+          <input type="hidden" name="action" value="add"><input type="hidden" name="model" value="status">
+          <div class="input-group">
+            <input name="name" class="form-control" placeholder="Новый статус">
+            <button class="btn btn-primary">Добавить</button>
+          </div>
+        </form>
+        <ul class="list-group">
+          {% for s in statuses %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{s.name}}
+            <form method="post">{% csrf_token %}
+              <input type="hidden" name="action" value="delete"><input type="hidden" name="model" value="status"><input type="hidden" name="id" value="{{s.id}}">
+              <button class="btn btn-sm btn-outline-danger">×</button>
+            </form>
+          </li>
+          {% empty %}<li class="list-group-item text-muted">Пусто</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">Типы</div>
+      <div class="card-body">
+        <form method="post" class="mb-2">{% csrf_token %}
+          <input type="hidden" name="action" value="add"><input type="hidden" name="model" value="type">
+          <div class="input-group">
+            <input name="name" class="form-control" placeholder="Новый тип">
+            <button class="btn btn-primary">Добавить</button>
+          </div>
+        </form>
+        <ul class="list-group">
+          {% for t in types %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{t.name}}
+            <form method="post">{% csrf_token %}
+              <input type="hidden" name="action" value="delete"><input type="hidden" name="model" value="type"><input type="hidden" name="id" value="{{t.id}}">
+              <button class="btn btn-sm btn-outline-danger">×</button>
+            </form>
+          </li>
+          {% empty %}<li class="list-group-item text-muted">Пусто</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">Категории</div>
+      <div class="card-body">
+        <form method="post" class="mb-2">{% csrf_token %}
+          <input type="hidden" name="action" value="add"><input type="hidden" name="model" value="category">
+          <div class="mb-2">
+            <select name="type_id" class="form-select" required>
+              <option value="">Тип…</option>
+              {% for t in types %}<option value="{{t.id}}">{{t.name}}</option>{% endfor %}
+            </select>
+          </div>
+          <div class="input-group">
+            <input name="name" class="form-control" placeholder="Новая категория" required>
+            <button class="btn btn-primary">Добавить</button>
+          </div>
+        </form>
+        <ul class="list-group">
+          {% for c in categories %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{c.name}} <span class="badge text-bg-light">{{c.type.name}}</span>
+            <form method="post">{% csrf_token %}
+              <input type="hidden" name="action" value="delete"><input type="hidden" name="model" value="category"><input type="hidden" name="id" value="{{c.id}}">
+              <button class="btn btn-sm btn-outline-danger">×</button>
+            </form>
+          </li>
+          {% empty %}<li class="list-group-item text-muted">Пусто</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-3">
+    <div class="card">
+      <div class="card-header">Подкатегории</div>
+      <div class="card-body">
+        <form method="post" class="mb-2">{% csrf_token %}
+          <input type="hidden" name="action" value="add"><input type="hidden" name="model" value="subcategory">
+          <div class="mb-2">
+            <select name="category_id" class="form-select" required>
+              <option value="">Категория…</option>
+              {% for c in categories %}<option value="{{c.id}}">{{c.name}} ({{c.type.name}})</option>{% endfor %}
+            </select>
+          </div>
+          <div class="input-group">
+            <input name="name" class="form-control" placeholder="Новая подкатегория" required>
+            <button class="btn btn-primary">Добавить</button>
+          </div>
+        </form>
+        <ul class="list-group">
+          {% for sc in subcategories %}
+          <li class="list-group-item d-flex justify-content-between align-items-center">
+            {{sc.name}} <span class="badge text-bg-light">{{sc.category.name}} → {{sc.category.type.name}}</span>
+            <form method="post">{% csrf_token %}
+              <input type="hidden" name="action" value="delete"><input type="hidden" name="model" value="subcategory"><input type="hidden" name="id" value="{{sc.id}}">
+              <button class="btn btn-sm btn-outline-danger">×</button>
+            </form>
+          </li>
+          {% empty %}<li class="list-group-item text-muted">Пусто</li>{% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

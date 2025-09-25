@@ -1,0 +1,121 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1 class="h4 mb-3">{% if object %}Изменение{% else %}Новая{% endif %} запись</h1>
+<form method="post" class="bg-white p-3 rounded shadow-sm">
+  {% csrf_token %}
+  <div class="row g-3">
+    <div class="col-md-3">{{ form.date.label_tag }} {{ form.date }}</div>
+
+    <div class="col-md-3">
+      {{ form.status.label_tag }}
+      <div class="input-group">
+        {{ form.status }}
+        <button type="button" id="btn-add-status" class="btn btn-outline-secondary">＋</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      {{ form.type.label_tag }}
+      <div class="input-group">
+        {{ form.type }}
+        <button type="button" id="btn-add-type" class="btn btn-outline-secondary">＋</button>
+      </div>
+    </div>
+
+    <div class="col-md-3">{{ form.amount.label_tag }} {{ form.amount }}</div>
+
+    <div class="col-md-4">
+      {{ form.category.label_tag }}
+      <div class="input-group">
+        {{ form.category }}
+        <button type="button" id="btn-add-category" class="btn btn-outline-secondary">＋</button>
+      </div>
+    </div>
+
+    <div class="col-md-4">
+      {{ form.subcategory.label_tag }}
+      <div class="input-group">
+        {{ form.subcategory }}
+        <button type="button" id="btn-add-subcategory" class="btn btn-outline-secondary">＋</button>
+      </div>
+    </div>
+
+    <div class="col-12">{{ form.comment.label_tag }} {{ form.comment }}</div>
+  </div>
+  <div class="mt-3">
+    <button class="btn btn-primary">Сохранить</button>
+    <a class="btn btn-outline-secondary" href="/dds/">Отмена</a>
+  </div>
+  {% if form.errors %}
+  <div class="alert alert-danger mt-3"><pre class="mb-0">{{ form.errors }}</pre></div>
+  {% endif %}
+</form>
+
+<!-- МОДАЛКИ (минималистичные, без Bootstrap JS) -->
+<style>
+.modal-lite{position:fixed;inset:0;background:rgba(0,0,0,.35);display:flex;align-items:center;justify-content:center;z-index:1050}
+.modal-lite .card{min-width:360px}
+</style>
+
+<div id="modal-status" class="modal-lite d-none">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Новый статус</span>
+      <button class="btn btn-sm btn-light" data-close-modal="modal-status">×</button>
+    </div>
+    <div class="card-body">
+      <form id="form-modal-status">
+        <input name="name" class="form-control mb-2" placeholder="Напр.: Бизнес" required>
+        <button class="btn btn-primary">Добавить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-type" class="modal-lite d-none">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Новый тип</span>
+      <button class="btn btn-sm btn-light" data-close-modal="modal-type">×</button>
+    </div>
+    <div class="card-body">
+      <form id="form-modal-type">
+        <input name="name" class="form-control mb-2" placeholder="Напр.: Пополнение" required>
+        <button class="btn btn-primary">Добавить</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<div id="modal-category" class="modal-lite d-none">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Новая категория (по выбранному типу)</span>
+      <button class="btn btn-sm btn-light" data-close-modal="modal-category">×</button>
+    </div>
+    <div class="card-body">
+      <form id="form-modal-category">
+        <input name="name" class="form-control mb-2" placeholder="Напр.: Маркетинг" required>
+        <button class="btn btn-primary">Добавить</button>
+      </form>
+      <div class="form-text">Категория привяжется к типу, выбранному в поле «Type».</div>
+    </div>
+  </div>
+</div>
+
+<div id="modal-subcategory" class="modal-lite d-none">
+  <div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <span>Новая подкатегория (по выбранной категории)</span>
+      <button class="btn btn-sm btn-light" data-close-modal="modal-subcategory">×</button>
+    </div>
+    <div class="card-body">
+      <form id="form-modal-subcategory">
+        <input name="name" class="form-control mb-2" placeholder="Напр.: Avito" required>
+        <button class="btn btn-primary">Добавить</button>
+      </form>
+      <div class="form-text">Подкатегория привяжется к категории, выбранной в поле «Category».</div>
+    </div>
+  </div>
+</div>
+{% endblock %}

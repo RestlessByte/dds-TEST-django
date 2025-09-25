@@ -1,0 +1,9 @@
+{% extends "core/base.html" %}
+{% block content %}
+<h1 class="h4">Удалить запись?</h1>
+<p class="text-muted">Это действие нельзя отменить.</p>
+<form method="post">{% csrf_token %}
+  <button class="btn btn-danger">Удалить</button>
+  <a class="btn btn-outline-secondary" href="/dds/">Отмена</a>
+</form>
+{% endblock %}
