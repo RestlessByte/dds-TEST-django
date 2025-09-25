@@ -35,7 +35,7 @@
 ## 🔧 Установка и запуск
 
 ```bash
-git clone <repo-url> dds
+git clone git@github.com:RestlessByte/dds-TEST-django dds
 cd dds
 
 python3 -m venv .venv
